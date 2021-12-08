@@ -8,7 +8,7 @@ async function main() {
 
   await token.deployed();
 
-  console.log("Deposit deployed to:", token.address);
+  console.log("ERC20 deployed to:", token.address);
 }
 
 

@@ -28,7 +28,7 @@ describe("ERC20", function () {
         expect(await token.totalSupply()).to.equal(19632017);
     });
     it("balanceOf() should return balance after transfer() of owner to another address", async function () {
-        const [addr1] = await ethers.getSigners();
+        const [owner, addr1] = await ethers.getSigners();
         const ERC20 = await ethers.getContractFactory("ERC20");
         const token = await ERC20.deploy();
         await token.deployed();

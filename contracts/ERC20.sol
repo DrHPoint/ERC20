@@ -50,7 +50,7 @@ contract ERC20 {
         require(_allowances[_from][msg.sender] >= _value, "Not enough allowed amount");
         require(_balances[_from] >= _value, "Not enough tokens");
         _balances[_from] -= _value;
-        _balances[msg.sender] += _value;
+        _balances[_to] += _value;
         emit Transfer(_from, _to, _value);
         _allowances[_from][msg.sender] -= _value;
         emit Approval(_from, msg.sender, _value);
