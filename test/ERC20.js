@@ -37,10 +37,10 @@ describe("ERC20", function () {
         expect(await token.balanceOf(addr1.address)).to.equal(100);
     });
     it("transfer() should return error, because adrr1 has no tokens", async function () {
-        const [addr1, addr2] = await ethers.getSigners();
+        const [owner, addr1, addr2] = await ethers.getSigners();
         const ERC20 = await ethers.getContractFactory("ERC20");
         const token = await ERC20.deploy();
-        await token.deployed();
+        await token.connect(owner).deployed();
         await expect(token.connect(addr1).transfer(addr2.address, 100)).to.be.revertedWith("Not enough tokens");
     });
     it("transferFrom() should return error, because addr2 didnt give permission to the add1 ", async function () {
