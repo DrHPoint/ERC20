@@ -53,7 +53,6 @@ contract ERC20 {
         _balances[_to] += _value;
         emit Transfer(_from, _to, _value);
         _allowances[_from][msg.sender] -= _value;
-        emit Approval(_from, msg.sender, _value);
         return true;
     }
 
@@ -66,6 +65,8 @@ contract ERC20 {
     function allowance(address _owner, address _spender) public view returns (uint256 remaining){
         return _allowances[_owner][_spender];
     }
+
+
 
 }
 
