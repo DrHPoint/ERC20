@@ -5,7 +5,7 @@ contract ERC20 {
     string private _name = "Doctor";
     string private _symbol = "WHO";
     uint8 private _decimals = 18;
-    uint256 private _totalSupply = 19632017;
+    uint256 private _totalSupply = 19632017 * 1e18;
     address public owner;
     mapping(address => uint256) _balances;
     mapping(address => mapping(address => uint256)) _allowances;
@@ -66,6 +66,20 @@ contract ERC20 {
         return _allowances[_owner][_spender];
     }
 
+    function burn(address _from, uint256 _value) public returns (bool success){
+        require(msg.sender == owner, "Not owner");
+        require(_balances[_from] >= _value, "Not enough tokens");
+        _balances[_from] -= _value;
+        _totalSupply -= _value;
+        return true;
+    }
+
+    function mint(address _to, uint256 _value) public returns (bool success){
+        require(msg.sender == owner, "Not owner");
+        _balances[_to] += _value;
+        _totalSupply += _value;
+        return true;
+    }
 
 
 }
