@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+require('solidity-coverage')
 
 const { PRIVATE_KEY, INFURA_URL } = require('./secret.js')
 

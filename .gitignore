@@ -3,3 +3,4 @@ secret.js
 #Hardhat files
 cache
 artifacts
+coverage
