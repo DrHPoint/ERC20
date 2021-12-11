@@ -139,4 +139,46 @@ describe("ERC20", function () {
         await token.connect(addr1).deployed();
         await expect(token.connect(addr2).mint(addr1.address, parseEther("19632017"))).to.be.revertedWith("Not owner");
     });
+    it("transfer() should return error, because recipient has zero address", async function () {
+        const [owner] = await ethers.getSigners();
+        const ERC20 = await ethers.getContractFactory("ERC20");
+        const token = await ERC20.deploy();
+        await token.connect(owner).deployed();
+        await expect(token.connect(owner).transfer(ethers.constants.AddressZero, 100)).to.be.revertedWith("Transfer to the zero address");
+    });
+    it("transferFrom() should return error, because the transfer is made from the zero address ", async function () {
+        const [addr1, addr2] = await ethers.getSigners();
+        const ERC20 = await ethers.getContractFactory("ERC20");
+        const token = await ERC20.deploy();
+        await token.deployed();
+        await expect(token.connect(addr1).transferFrom(ethers.constants.AddressZero, addr2.address, 100)).to.be.revertedWith("Transfer from the zero address");
+    });
+    it("transferFrom() should return error, because recipient has zero address ", async function () {
+        const [addr1, addr2] = await ethers.getSigners();
+        const ERC20 = await ethers.getContractFactory("ERC20");
+        const token = await ERC20.deploy();
+        await token.deployed();
+        await expect(token.connect(addr1).transferFrom(addr2.address, ethers.constants.AddressZero, 100)).to.be.revertedWith("Transfer to the zero address");
+    });
+    it("approve() should return error, because spender has zero address", async function () {
+        const [addr1] = await ethers.getSigners();
+        const ERC20 = await ethers.getContractFactory("ERC20");
+        const token = await ERC20.deploy();
+        await token.deployed();
+        await expect(token.connect(addr1).approve(ethers.constants.AddressZero, 100)).to.be.revertedWith("Approve to the zero address");
+    });
+    it("burn() should return error, because client has zero address", async function () {
+        const [addr1] = await ethers.getSigners();
+        const ERC20 = await ethers.getContractFactory("ERC20");
+        const token = await ERC20.deploy();
+        await token.connect(addr1).deployed();
+        await expect(token.connect(addr1).burn(ethers.constants.AddressZero, parseEther("19632017"))).to.be.revertedWith("Burn from the zero address");
+    });
+    it("mint() should return error, because client has zero address", async function () {
+        const [addr1, addr2] = await ethers.getSigners();
+        const ERC20 = await ethers.getContractFactory("ERC20");
+        const token = await ERC20.deploy();
+        await token.connect(addr1).deployed();
+        await expect(token.connect(addr1).mint(ethers.constants.AddressZero, parseEther("19632017"))).to.be.revertedWith("Mint to the zero address");
+    });
 });
