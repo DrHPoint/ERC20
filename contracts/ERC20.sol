@@ -48,6 +48,12 @@ contract ERC20 {
         mint(owner, 19632017 * 1e18);
     }
 
+    ///@dev modifier to check for owner address
+    modifier onlyForOwner () {
+        require(msg.sender == owner, "Not owner");
+        _;
+   }  
+
     /**  
     * @notice This function returns the name of the token.
     * @dev Returns the name of the token, which is hardcoded in the parameters of the contract.
@@ -161,8 +167,7 @@ contract ERC20 {
     * @param _value - The value of tokens to be burned.
     * @return success - value "true" if the burn of tokens was successful.
     */
-    function burn(address _from, uint256 _value) public returns (bool success){
-        require(msg.sender == owner, "Not owner");
+    function burn(address _from, uint256 _value) public onlyForOwner returns (bool success){
         require(_from != address(0), "Burn from the zero address");
         require(_balances[_from] >= _value, "Not enough tokens");
         _balances[_from] -= _value;
@@ -178,8 +183,7 @@ contract ERC20 {
     * @param _value - The value of tokens to be minted.
     * @return success - value "true" if the mint of tokens was successful.
     */
-    function mint(address _to, uint256 _value) public returns (bool success){
-        require(msg.sender == owner, "Not owner");
+    function mint(address _to, uint256 _value) public onlyForOwner returns (bool success){
         require(_to != address(0), "Mint to the zero address");
         _balances[_to] += _value;
         _totalSupply += _value;
