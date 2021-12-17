@@ -53,7 +53,7 @@ contract ERC20 {
     * @dev Returns the name of the token, which is hardcoded in the parameters of the contract.
     * @return _name - Name of Token.
     */
-    function name() public view returns (string memory) {
+    function name() external view returns (string memory) {
         return _name;
     }
 
@@ -62,7 +62,7 @@ contract ERC20 {
     * @dev Returns the symbol of the token, which is hardcoded in the parameters of the contract.
     * @return _symbol - Symbol of Token.
     */
-    function symbol() public view returns (string memory) {
+    function symbol() external view returns (string memory) {
         return _symbol;
     }
 
@@ -71,7 +71,7 @@ contract ERC20 {
     * @dev Returns the decimals of the token, which is hardcoded in the parameters of the contract.
     * @return _decimals - Decimals of the token (how many the whole token is being divided).
     */
-    function decimals() public view returns (uint8){
+    function decimals() external view returns (uint8){
         return _decimals;
     }
 
@@ -80,7 +80,7 @@ contract ERC20 {
     * @dev Standard function that returns the current amount of balances.
     * @return totalSupply - the sum of all balances.
     */
-    function totalSupply() public view returns (uint256){
+    function totalSupply() external view returns (uint256){
         return _totalSupply;
     }
 
@@ -90,7 +90,7 @@ contract ERC20 {
     * @param _owner - The address of the client whose balance you want to check.
     * @return balance - The client's token balance
     */
-    function balanceOf(address _owner) public view returns (uint256 balance){
+    function balanceOf(address _owner) external view returns (uint256 balance){
         return _balances[_owner];
     }
 
@@ -101,7 +101,7 @@ contract ERC20 {
     * @param _value - The value of tokens used in the transfer.
     * @return success - value "true" if the transfer was successful.
     */
-    function transfer(address _to, uint256 _value) public returns (bool success) {
+    function transfer(address _to, uint256 _value) external returns (bool success) {
         require(_to != address(0), "Transfer to the zero address");
         require(_balances[msg.sender] >= _value, "Not enough tokens");
         _balances[msg.sender] -= _value;
@@ -118,7 +118,7 @@ contract ERC20 {
     * @param _value - The value of tokens used in the transfer.
     * @return success - value "true" if the transfer was successful.
     */
-    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success){
+    function transferFrom(address _from, address _to, uint256 _value) external returns (bool success){
         require(_from != address(0), "Transfer from the zero address");
         require(_to != address(0), "Transfer to the zero address");
         require(_allowances[_from][msg.sender] >= _value, "Not enough allowed amount");
@@ -137,7 +137,7 @@ contract ERC20 {
     * @param _value - The value of tokens that the specified user is allowed to use.
     * @return success - value "true" if the approve was successful.
     */
-    function approve(address _spender, uint256 _value) public returns (bool success){
+    function approve(address _spender, uint256 _value) external returns (bool success){
         require(_spender != address(0), "Approve to the zero address");
         _allowances[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
@@ -151,7 +151,7 @@ contract ERC20 {
     * @param _spender - The address of the user who is allowed to use other user tokens.
     * @return remaining - The current number of tokens trusted by one user to another user.
     */
-    function allowance(address _owner, address _spender) public view returns (uint256 remaining){
+    function allowance(address _owner, address _spender) external view returns (uint256 remaining){
         return _allowances[_owner][_spender];
     }
 
