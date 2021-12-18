@@ -4,7 +4,7 @@ async function main() {
 
 
   const ERC20 = await hre.ethers.getContractFactory("ERC20");
-  const token = await ERC20.deploy();
+  const token = await ERC20.deploy("Doctor", "WHO", 18);
 
   await token.deployed();
 

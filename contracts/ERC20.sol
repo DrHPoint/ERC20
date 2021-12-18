@@ -8,8 +8,8 @@ pragma solidity ^0.8.1;
 * @dev All function calls are currently implemented without side effects. 
 */
 contract ERC20 {
-    string private _name;// = "Doctor";
-    string private _symbol;// = "WHO";
+    string private _name;
+    string private _symbol;
     uint8 private immutable _decimals; // = 18;
     uint256 private _totalSupply = 0;
     address public owner;
@@ -33,6 +33,14 @@ contract ERC20 {
     * @param _value is the value by which the approval was given to carry out transactions by proxy.
     */
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
+
+    /**  
+    * @notice This event notifies about the transfer of ownership of the contract from the old address (_previousOwner) to the new address(_newOwner)
+    * @dev Nothing unusual. Standard event with two addresses signifying the transfer of ownership to a contract
+    * @param _previousOwner is the address of previous owner of that contract.
+    * @param _newOwner is the address of new owner of that contract.
+    */
+    event OwnershipTransferred(address indexed _previousOwner, address indexed _newOwner);
 
     /** 
     *@dev Currently, the value of '_totalSupply' shown in the constructor, cannot be set. Set '_name', '_symbol' and '_decimals' value
@@ -189,6 +197,18 @@ contract ERC20 {
         _totalSupply += _value;
         emit Transfer(address(0), _to, _value);
         return true;
+    }
+
+    /**  
+    * @notice This function allows you to transfer ownership of a contract to a new owner(_newOwner).
+    * @dev The function checks for the owner of the contract, for a zero address and transfer ownership of a contract to a new owner, after which it calls ownership transferred event.
+    * @param _newOwner - User address from whose balance tokens are minted.
+    */
+    function transferOwnership(address _newOwner) public onlyForOwner {
+        require(_newOwner != address(0), "New owner have the zero address");
+        address oldOwner = owner;
+        owner = _newOwner;
+        emit OwnershipTransferred(oldOwner, _newOwner);
     }
 }
 
