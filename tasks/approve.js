@@ -11,7 +11,7 @@ task("approve", "Get approve to some address")
 
    const decimals = await token.decimals();
 
-   await token.approve(taskArgs.spender, parseUnits(taskArgs.value, decimals));
+   await token.connect(addr2).approve(taskArgs.spender, parseUnits(taskArgs.value, decimals));
 
    console.log('approve task Done!');
  });

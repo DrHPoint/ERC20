@@ -12,7 +12,7 @@ task("transferFrom", "Transfer some tokens to some address")
 
    const decimals = await token.decimals();
 
-   await token.transferFrom(taskArgs.from, taskArgs.to, parseUnits(taskArgs.value, decimals));
+   await token.connect(addr2).transferFrom(taskArgs.from, taskArgs.to, parseUnits(taskArgs.value, decimals));
 
    console.log('transferFrom task Done!');
  });

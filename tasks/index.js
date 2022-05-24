@@ -3,3 +3,4 @@ require("./burn");
 require("./transfer");
 require("./transferFrom");
 require("./approve");
+require("./transferOwnership")

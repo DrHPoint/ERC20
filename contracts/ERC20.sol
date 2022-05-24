@@ -13,6 +13,7 @@ contract ERC20 {
     uint8 private immutable _decimals; // = 18;
     uint256 private _totalSupply = 0;
     address public owner;
+    address public bridge;
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
 
@@ -55,6 +56,12 @@ contract ERC20 {
         _decimals = Decimals;
         mint(owner, 19632017 * 1e18);
     }
+
+    ///@dev modifier to check for owner address
+    modifier onlyForOwnerAndBridge () {
+        require(((msg.sender == owner) || (msg.sender == bridge)), "Not owner or bridge");
+        _;
+   }  
 
     ///@dev modifier to check for owner address
     modifier onlyForOwner () {
@@ -175,7 +182,7 @@ contract ERC20 {
     * @param _value - The value of tokens to be burned.
     * @return success - value "true" if the burn of tokens was successful.
     */
-    function burn(address _from, uint256 _value) public onlyForOwner returns (bool success){
+    function burn(address _from, uint256 _value) public onlyForOwnerAndBridge returns (bool success){
         require(_from != address(0), "Burn from the zero address");
         require(_balances[_from] >= _value, "Not enough tokens");
         _balances[_from] -= _value;
@@ -191,7 +198,7 @@ contract ERC20 {
     * @param _value - The value of tokens to be minted.
     * @return success - value "true" if the mint of tokens was successful.
     */
-    function mint(address _to, uint256 _value) public onlyForOwner returns (bool success){
+    function mint(address _to, uint256 _value) public onlyForOwnerAndBridge returns (bool success){
         require(_to != address(0), "Mint to the zero address");
         _balances[_to] += _value;
         _totalSupply += _value;
@@ -209,6 +216,16 @@ contract ERC20 {
         address oldOwner = owner;
         owner = _newOwner;
         emit OwnershipTransferred(oldOwner, _newOwner);
+    }
+
+    /**  
+    * @notice This function allows you to set a new bridge address(_newBridge).
+    * @dev The function checks for the owner of the contract, for a zero address and transfer ownership of a contract to a new owner, after which it calls ownership transferred event.
+    * @param _newBridge - User address from whose balance tokens are minted.
+    */
+    function setBridgeAddress(address _newBridge) public onlyForOwner {
+        require(_newBridge != address(0), "New bridge have the zero address");
+        bridge = _newBridge;
     }
 }
 
